@@ -6,9 +6,7 @@
 /test-output/
 *.log
 
-# Local artifacts
-*.xlsx
-*.csv
+
 
 # Eclipse
 .classpath
