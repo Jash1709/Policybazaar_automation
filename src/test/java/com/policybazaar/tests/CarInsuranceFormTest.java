@@ -10,16 +10,20 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import io.qameta.allure.*;
 
 /**
  * TestNG class for Car Insurance Form with 3 test methods
  */
+@Epic("PolicyBazaar Automation")
+@Feature("Car Insurance")
 public class CarInsuranceFormTest extends BaseTest {
     
     private static final Logger logger = LogManager.getLogger(CarInsuranceFormTest.class);
     private CarInsuranceHomePage carPage;
     
     @BeforeClass
+    @Step("Setup Car Insurance Test Environment")
     public void setUp() {
         logger.info("Setting up Car Insurance Form Test");
         // Navigate to application (driver is already initialized by BaseTest)
@@ -32,6 +36,9 @@ public class CarInsuranceFormTest extends BaseTest {
     }
     
     @Test(priority = 1, groups = {"valid-data"})
+    @Story("Car Insurance Form Validation")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test car insurance form with valid data - Get Quote button should be enabled")
     public void testValidData() {
         logger.info("========== TEST CASE 1: VALID DATA ==========");
         carPage.fillFormWithData();
@@ -39,6 +46,7 @@ public class CarInsuranceFormTest extends BaseTest {
         //Get Quote button should be clickable for valid data
         WebElement getQuoteBtn = driver.findElement(By.xpath("/html/body/section/section/div/div/div/div[2]/div[2]/div/div/div/div[3]/button"));
         Assert.assertTrue(getQuoteBtn.isEnabled(), "Get Quote button should be clickable for valid data");
+        takeScreenshot("Car Insurance Valid Data Test");
         
         logger.info("Test Case 1 - Valid Data: COMPLETED");
     }

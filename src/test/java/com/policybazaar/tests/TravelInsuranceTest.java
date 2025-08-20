@@ -9,17 +9,21 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import io.qameta.allure.*;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+@Epic("PolicyBazaar Automation")
+@Feature("Travel Insurance")
 public class TravelInsuranceTest extends BaseTest {
 
     private TravelInsuranceHomePage homePage;
     private TravelInsuranceResultsPage resultsPage;
 
     @BeforeClass
+    @Step("Setup Travel Insurance Test Environment")
     public void setUp() {
         // Navigate to application (driver is already initialized by BaseTest)
         navigateToHome();
@@ -31,17 +35,25 @@ public class TravelInsuranceTest extends BaseTest {
     }
 
     @Test(priority = 0, groups = {"medical-no","medical-yes"})
+    @Story("Browser Verification")
+    @Severity(SeverityLevel.BLOCKER)
+    @Description("Verify that browser opens successfully and lands on PolicyBazaar homepage")
     public void verifyBrowserOpenedAndLandingPageLoaded() {
         Assert.assertNotNull(driver, "WebDriver is null");
         Assert.assertTrue(driver.getWindowHandles().size() > 0, "No browser window opened");
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("policybazaar.com"), "Unexpected landing URL: " + currentUrl);
+        takeScreenshot("Browser Opened Successfully");
     }
 
     @Test(priority = 1, dependsOnMethods = "verifyBrowserOpenedAndLandingPageLoaded", groups = {"medical-no"})
+    @Story("Travel Insurance Form Filling")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Fill travel insurance form for 2 students to Europe with no medical conditions")
     public void fillTravelDetails_ForTwoStudents_Europe() {
     	homePage.clickTravelInsurance();
     	homePage.fillFormWithNo();
+    	takeScreenshot("Travel Form Filled - No Medical Conditions");
     }
 
     @Test(priority = 2, dependsOnMethods = "fillTravelDetails_ForTwoStudents_Europe", groups = {"medical-no"})

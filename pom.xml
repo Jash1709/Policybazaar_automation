@@ -11,6 +11,8 @@
     <testng.version>7.8.0</testng.version>
     <webdrivermanager.version>5.6.2</webdrivermanager.version>
     <log4j2.version>2.20.0</log4j2.version>
+    <allure.version>2.23.0</allure.version>
+    <aspectj.version>1.9.19</aspectj.version>
   </properties>
   
   <dependencies>
@@ -79,6 +81,20 @@
       <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
+    
+    <!-- Allure TestNG integration (includes Selenium support) -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <version>${allure.version}</version>
+    </dependency>
+    
+    <!-- AspectJ runtime for Allure annotations -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
   </dependencies>
   
   <build>
@@ -101,7 +117,43 @@
           <suiteXmlFiles>
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
+          <argLine>
+            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+          </argLine>
+          <systemProperties>
+            <property>
+              <name>allure.results.directory</name>
+              <value>${project.build.directory}/allure-results</value>
+            </property>
+          </systemProperties>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      
+      <!-- Allure Maven Plugin -->
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.12.0</version>
+        <configuration>
+          <reportVersion>${allure.version}</reportVersion>
+          <allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.23.0/allure-2.23.0.zip</allureDownloadUrl>
+        </configuration>
+        <executions>
+          <execution>
+            <id>allure-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
