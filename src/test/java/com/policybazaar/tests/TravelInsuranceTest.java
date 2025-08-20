@@ -3,12 +3,10 @@ package com.policybazaar.tests;
 import com.policybazaar.pages.TravelInsuranceHomePage;
 import com.policybazaar.pages.TravelInsuranceResultsPage;
 import com.policybazaar.utils.DriverSetup;
-import com.policybazaar.utils.ConfigReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,18 +14,16 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class TravelInsuranceTest {
+public class TravelInsuranceTest extends BaseTest {
 
-    private WebDriver driver;
     private TravelInsuranceHomePage homePage;
     private TravelInsuranceResultsPage resultsPage;
 
     @BeforeClass
     public void setUp() {
-        DriverSetup.initializeDriver(ConfigReader.getProperty("browser"));
-        DriverSetup.navigateToApplication();
-        driver = DriverSetup.getDriver();
-
+        // Navigate to application (driver is already initialized by BaseTest)
+        navigateToHome();
+        
         // Use HomePage to click into Travel Insurance
         homePage = new TravelInsuranceHomePage(driver);
         
@@ -74,7 +70,7 @@ public class TravelInsuranceTest {
     @Test(priority = 4, dependsOnMethods = "verifyBrowserOpenedAndLandingPageLoaded", groups = {"medical-yes"})
     public void fillTravelDetails_WithMedicalConditionYes() {
         // Reopen home and navigate via HomePage each time
-        DriverSetup.navigateToApplication();
+        navigateToHome();
         homePage = new TravelInsuranceHomePage(driver);
         homePage.clickTravelInsurance();
         resultsPage = new TravelInsuranceResultsPage(driver);
@@ -107,7 +103,7 @@ public class TravelInsuranceTest {
     @Test(priority = 7, groups = {"validation"})
     public void testValidationError_IncompleteAgeSelection() {
         // Navigate to fresh page for validation test
-        DriverSetup.navigateToApplication();
+        navigateToHome();
         homePage = new TravelInsuranceHomePage(driver);
         homePage.clickTravelInsurance();
         
@@ -120,8 +116,4 @@ public class TravelInsuranceTest {
             "Validation error message should appear on page");
     }
 
-    @AfterClass()
-    public void tearDown() {
-        DriverSetup.tearDown();
-    }
 } 

@@ -1,32 +1,24 @@
 package com.policybazaar.tests;
 
 import com.policybazaar.pages.HealthInsurancePage;
-import com.policybazaar.utils.DriverSetup;
-import com.policybazaar.utils.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.time.Duration;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-public class HealthInsuranceTest {
+public class HealthInsuranceTest extends BaseTest {
 
-	private WebDriver driver;
 	private HealthInsurancePage healthPage;
 
 	@BeforeClass
 	public void setUp() {
-		DriverSetup.initializeDriver(ConfigReader.getProperty("browser"));
-		DriverSetup.navigateToApplication();
-		driver = DriverSetup.getDriver();
+		// Navigate to application (driver is already initialized by BaseTest)
+		navigateToHome();
+		
 		healthPage = new HealthInsurancePage(driver);
 	}
 
@@ -47,8 +39,4 @@ public class HealthInsuranceTest {
 		Assert.assertTrue(items.size() >= 8, "Expected at least 8 Health Insurance items, found: " + items.size());
 	}
 
-	@AfterClass
-	public void tearDown() {
-		DriverSetup.tearDown();
-	}
 }

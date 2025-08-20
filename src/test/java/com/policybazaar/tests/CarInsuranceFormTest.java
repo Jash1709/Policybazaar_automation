@@ -2,32 +2,28 @@ package com.policybazaar.tests;
 
 import com.policybazaar.pages.CarInsuranceHomePage;
 import com.policybazaar.utils.DriverSetup;
-import com.policybazaar.utils.ConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * TestNG class for Car Insurance Form with 3 test methods
  */
-public class CarInsuranceFormTest {
+public class CarInsuranceFormTest extends BaseTest {
     
     private static final Logger logger = LogManager.getLogger(CarInsuranceFormTest.class);
-    private WebDriver driver;
     private CarInsuranceHomePage carPage;
     
     @BeforeClass
     public void setUp() {
         logger.info("Setting up Car Insurance Form Test");
-        DriverSetup.initializeDriver(ConfigReader.getProperty("browser"));
-        DriverSetup.navigateToApplication();
-        driver = DriverSetup.getDriver();
+        // Navigate to application (driver is already initialized by BaseTest)
+        navigateToHome();
         
         // Initialize CarInsuranceHomePage
         carPage = new CarInsuranceHomePage(driver);
@@ -52,7 +48,7 @@ public class CarInsuranceFormTest {
         logger.info("========== TEST CASE 2: BLANK NAME ==========");
         
         // Navigate fresh and reinitialize
-        DriverSetup.navigateToApplication();
+        navigateToHome();
         carPage = new CarInsuranceHomePage(driver);
         carPage.clickCarInsurance();
         
@@ -70,7 +66,7 @@ public class CarInsuranceFormTest {
         logger.info("========== TEST CASE 3: INVALID PHONE ==========");
         
         // Navigate fresh and reinitialize
-        DriverSetup.navigateToApplication();
+        navigateToHome();
         carPage = new CarInsuranceHomePage(driver);
         carPage.clickCarInsurance();
         
@@ -81,12 +77,5 @@ public class CarInsuranceFormTest {
         Assert.assertTrue(errorMsg.isDisplayed(), "Error message should appear for invalid phone");
         
         logger.info("Test Case 3 - Invalid Phone: COMPLETED");
-    }
-    
-    @AfterClass
-    public void tearDown() {
-        logger.info("Tearing down Car Insurance Form Test");
-        DriverSetup.tearDown();
-        logger.info("Test teardown completed");
     }
 } 
