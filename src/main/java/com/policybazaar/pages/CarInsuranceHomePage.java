@@ -39,7 +39,7 @@ public class CarInsuranceHomePage {
 	@FindBy(xpath="//span[contains(@class,'blueTextButton') and contains(text(),'Click here')]")
 	WebElement clickHere;
 
-	@FindBy(xpath="//input[@placeholder='Search City' and contains(@class,'form-control')]")
+	@FindBy(xpath="//*[@placeholder='Search City' and contains(@class,'form-control')]")
 
 	WebElement cityField;
 
@@ -180,12 +180,7 @@ public class CarInsuranceHomePage {
 		logger.warn("Error validation: FAIL - Expected: '{}', but got: '{}'", expectedError, actualError);
 		return "FAIL";
 	}
-//	public void valid() {
-//		
-//		continueWithoutCarNumber();
-//		setCity("mumbai");
-//		
-//	}
+
 
 	public String getErrorMsg() {
 		String errMessage = errMsg.getText();
@@ -193,10 +188,7 @@ public class CarInsuranceHomePage {
 		return errMessage;
 	}
 
-	/**
-	 * Fills the complete car insurance form using data from model class
-	 * @param formData CarInsuranceFormData object containing form data
-	 */
+	
 	public void fillFormWithData() {
 		logger.info("Starting to fill form with valid data");
 		CarInsuranceFormData formData = JsonDataReader.readCarInsuranceData("car_insurance_data.json");
@@ -206,7 +198,7 @@ public class CarInsuranceHomePage {
 		continueWithoutCarNumber();
 		
 		// Fill city
-		if (formData.getCity() != null) {
+		if (formData.getCity() != null && !formData.getCity().isEmpty()) {
 			setCity(formData.getCity());
 		}
 		

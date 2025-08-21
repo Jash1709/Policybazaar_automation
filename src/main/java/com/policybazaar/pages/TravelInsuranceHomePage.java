@@ -134,7 +134,7 @@ public class TravelInsuranceHomePage {
     
     public void selectTraveller2Age(int traveller2Age) {
         // Select second traveller and age
-        safeClick(By.xpath("//*[@id='1']"));
+    	traveller2option.click();
         safeClick(By.xpath("//label[@for='" + traveller2Age + " years_undefined']"));
         logger.info("Second traveller age {} selected successfully", traveller2Age);
     }
